@@ -3,11 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/timerFragment">
-
+    app:startDestination="@id/timerGetDataFrag">
+    <fragment
+        android:id="@+id/timerGetDataFrag"
+        android:name="com.mpvaitheeswaran.timeranker.TimerGetDataFrag"
+        android:label="TimerGetDataFrag"
+        tools:layout="@layout/fragment_timer_get_data">
+        <action
+            android:id="@+id/action_timerGetDataFrag_to_timerFragment"
+            app:destination="@id/timerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/timerFragment"
         android:name="com.mpvaitheeswaran.timeranker.TimerFragment"
         android:label="TimerFragment"
-        tools:layout="@layout/fragment_timer"/>
+        tools:layout="@layout/fragment_timer">
+        <argument
+            android:name="milliSecond"
+            app:argType="long"
+            android:defaultValue="60000L" />
+    </fragment>
 </navigation>
