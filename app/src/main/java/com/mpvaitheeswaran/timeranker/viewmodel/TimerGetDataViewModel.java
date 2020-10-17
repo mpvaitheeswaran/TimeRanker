@@ -1,5 +1,7 @@
 package com.mpvaitheeswaran.timeranker.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -19,4 +21,11 @@ public class TimerGetDataViewModel extends ViewModel {
     public void onStartFinished(){
         _onStarted.setValue(false);
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Log.i("TimerGetDataViewModel","onCleared() is Called");
+    }
+
 }

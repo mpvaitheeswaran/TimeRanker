@@ -1,21 +1,18 @@
 package com.mpvaitheeswaran.timeranker.viewmodel;
 
 
-import android.app.Application;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.mpvaitheeswaran.timeranker.R;
 
 
 public class TimerViewModel extends ViewModel {
 
     CountDownTimer countDownTimer;
+    long milliSecond;   //this variable using for pause the timer and continues to paused time.
 
     //Encapsulated Variavbles
     private MutableLiveData<Integer> _buttonIcon=new MutableLiveData<Integer>();
@@ -26,9 +23,11 @@ public class TimerViewModel extends ViewModel {
 
     //set default values in this constructor
     TimerViewModel(long milliSecond){
-        startCountDown(milliSecond);
-        _buttonIcon.setValue(R.drawable.ic_round_play_arrow_24);
+        this.milliSecond=milliSecond;
+        startCountDown(this.milliSecond);
+        _buttonIcon.setValue(R.drawable.ic_round_pause_circle_filled_24);
         _timerText.setValue("Start Timer");
+        Log.i("TimerViewModel","TimerViewModel() Constructor called...");
 
     }
 
@@ -37,10 +36,10 @@ public class TimerViewModel extends ViewModel {
     public void onClick(){
         switch (_buttonIcon.getValue()){
             case R.drawable.ic_round_play_arrow_24:
-                startTimer();
+                startCountDown(milliSecond);    //When user click pause button and click play button to continues the timer.
                 changeIcon();
                 break;
-            case R.drawable.ic_round_stop_24:
+            case R.drawable.ic_round_pause_circle_filled_24:
                 stopTimer();
                 changeIcon();
                 break;
@@ -59,11 +58,11 @@ public class TimerViewModel extends ViewModel {
     private void changeIcon(){
         //TODO Implement the change Icon action
         switch (_buttonIcon.getValue()){
-            case R.drawable.ic_round_stop_24:
+            case R.drawable.ic_round_pause_circle_filled_24:
                 _buttonIcon.setValue(R.drawable.ic_round_play_arrow_24);
                 break;
             case R.drawable.ic_round_play_arrow_24:
-                _buttonIcon.setValue(R.drawable.ic_round_stop_24);
+                _buttonIcon.setValue(R.drawable.ic_round_pause_circle_filled_24);
                 break;
         }
     }
@@ -71,6 +70,7 @@ public class TimerViewModel extends ViewModel {
         countDownTimer= new CountDownTimer(duration, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                milliSecond=millisUntilFinished;    //when user click pause button to pause the timer
                 _timerText.setValue("seconds remaining: " + millisUntilFinished / 1000);
 
             }
@@ -80,6 +80,12 @@ public class TimerViewModel extends ViewModel {
                 changeIcon();
 
             }
-        };
+        }.start();
+    }
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        stopTimer();
+        Log.i("TimerViewModel","onCleared() is Called");
     }
 }

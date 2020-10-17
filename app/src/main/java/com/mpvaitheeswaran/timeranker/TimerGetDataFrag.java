@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mpvaitheeswaran.timeranker.databinding.FragmentTimerGetDataBinding;
@@ -47,18 +48,33 @@ public class TimerGetDataFrag extends Fragment {
             public void onChanged(Boolean isStarted) {
                 if(isStarted){
                     //Getting Data from EditText
-                    int second=Integer.parseInt(binding.secondInput.getText().toString());
-                    long milliSecond=second*1000;
-                    Toast.makeText(getContext(), "Started is clicked...", Toast.LENGTH_SHORT).show();
-                    //Passinng data to TimerFragment
-                    TimerGetDataFragDirections.ActionTimerGetDataFragToTimerFragment action=TimerGetDataFragDirections
-                            .actionTimerGetDataFragToTimerFragment();
-                    action.setMilliSecond(milliSecond);
-                    navController.navigate(action);
-                    viewModel.onStartFinished();
+
+                    if(isEditTextNotEmpty(binding.secondInput)) {
+                        int second=Integer.parseInt(binding.secondInput.getText().toString());
+                        long milliSecond=second*1000;
+
+                        //Passinng data to TimerFragment
+                        TimerGetDataFragDirections.ActionTimerGetDataFragToTimerFragment action = TimerGetDataFragDirections
+                                .actionTimerGetDataFragToTimerFragment();
+                        action.setMilliSecond(milliSecond);
+                        navController.navigate(action);
+                        Toast.makeText(getContext(), "Started is clicked...", Toast.LENGTH_SHORT).show();
+                        viewModel.onStartFinished();
+                    }else {
+                        Toast.makeText(getContext(), "Second value required!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
+
         });
+    }
+    private boolean isEditTextNotEmpty(EditText editText) {
+        if (editText.getText().toString().trim().isEmpty()){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }
