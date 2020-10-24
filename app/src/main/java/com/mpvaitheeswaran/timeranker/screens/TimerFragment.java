@@ -1,4 +1,4 @@
-package com.mpvaitheeswaran.timeranker;
+package com.mpvaitheeswaran.timeranker.screens;
 
 import android.os.Bundle;
 
@@ -6,12 +6,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mpvaitheeswaran.timeranker.R;
 import com.mpvaitheeswaran.timeranker.databinding.FragmentTimerBinding;
 import com.mpvaitheeswaran.timeranker.viewmodel.TimerViewModel;
 import com.mpvaitheeswaran.timeranker.viewmodel.TimerViewModelFactory;
@@ -27,9 +26,9 @@ public class TimerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        milliSecond=TimerFragmentArgs.fromBundle(getArguments()).getMilliSecond();
+        milliSecond= TimerFragmentArgs.fromBundle(getArguments()).getMilliSecond();
         // Inflate the layout for this fragment
-        binding= DataBindingUtil.inflate(inflater,R.layout.fragment_timer,container,false);
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_timer,container,false);
         timerViewModelFactory=new TimerViewModelFactory(milliSecond);
         viewModel=new ViewModelProvider(this,timerViewModelFactory).get(TimerViewModel.class);
         binding.setTimerViewModel(viewModel);

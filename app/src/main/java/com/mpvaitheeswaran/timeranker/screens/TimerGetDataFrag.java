@@ -1,4 +1,4 @@
-package com.mpvaitheeswaran.timeranker;
+package com.mpvaitheeswaran.timeranker.screens;
 
 import android.os.Bundle;
 
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mpvaitheeswaran.timeranker.R;
 import com.mpvaitheeswaran.timeranker.databinding.FragmentTimerGetDataBinding;
 import com.mpvaitheeswaran.timeranker.viewmodel.TimerGetDataViewModel;
 import com.mpvaitheeswaran.timeranker.viewmodel.TimerGetDataViewModelFactory;
@@ -29,7 +30,7 @@ public class TimerGetDataFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_timer_get_data,container,false);
+        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_timer_get_data,container,false);
         viewModelFactory=new TimerGetDataViewModelFactory();
         viewModel=new ViewModelProvider(this,viewModelFactory).get(TimerGetDataViewModel.class);
         binding.setViewModel(viewModel);
