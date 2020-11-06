@@ -22,5 +22,8 @@
             android:name="milliSecond"
             app:argType="long"
             android:defaultValue="60000L" />
+        <action
+            android:id="@+id/action_timerFragment_to_timerGetDataFrag"
+            app:destination="@id/timerGetDataFrag" />
     </fragment>
 </navigation>

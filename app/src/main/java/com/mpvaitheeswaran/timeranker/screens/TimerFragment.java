@@ -2,10 +2,15 @@ package com.mpvaitheeswaran.timeranker.screens;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,8 @@ public class TimerFragment extends Fragment {
     //Safe arg variable
     long milliSecond;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,6 +39,14 @@ public class TimerFragment extends Fragment {
         timerViewModelFactory=new TimerViewModelFactory(milliSecond);
         viewModel=new ViewModelProvider(this,timerViewModelFactory).get(TimerViewModel.class);
         binding.setTimerViewModel(viewModel);
+
+        return binding.getRoot();
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final NavController navController= Navigation.findNavController(view);
+
 
         viewModel.buttonIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
@@ -43,9 +58,13 @@ public class TimerFragment extends Fragment {
         viewModel.timerText.observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.timeIndicator.setText(s);
+                if (!(s.equals("done"))){
+                    binding.timeIndicator.setText(s);
+                }else {
+                    navController.navigate(TimerFragmentDirections.actionTimerFragmentToTimerGetDataFrag());
+                }
+
             }
         });
-        return binding.getRoot();
     }
 }
