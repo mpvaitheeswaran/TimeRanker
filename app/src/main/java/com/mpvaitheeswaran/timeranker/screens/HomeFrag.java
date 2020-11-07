@@ -6,6 +6,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,21 +39,30 @@ public class HomeFrag extends Fragment {
         fragments.add(new TimerTabFrag());
         fragments.add(new StopwatchTabFrag());
 
-        viewPagerAdapter=new ViewPagerAdapter(fragments,
-                requireActivity().getSupportFragmentManager(),
-                getLifecycle());
-        viewPager.setAdapter(viewPagerAdapter);
-        new TabLayoutMediator(tabLayout,viewPager,(tab, position) -> {
-            //TODO Implement tab Something
-            switch (position){
-                case 0:
-                    tab.setText("Timer");
-                    break;
-                case 1:
-                    tab.setText("Stopwatch");
-                    break;
+        //The Handler is very important one Without thread the app crash when the configuration changes.
+        Handler handler =new Handler();
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                viewPagerAdapter=new ViewPagerAdapter(fragments,
+                        requireActivity().getSupportFragmentManager(),
+                        getLifecycle());
+                viewPager.setAdapter(viewPagerAdapter);
+                new TabLayoutMediator(tabLayout,viewPager,(tab, position) -> {
+                    //TODO Implement tab Something
+                    switch (position){
+                        case 0:
+                            tab.setText("Timer");
+                            break;
+                        case 1:
+                            tab.setText("Stopwatch");
+                            break;
+                    }
+                }).attach();
             }
-        }).attach();
+        });
+
         return binding.getRoot();
     }
 }
