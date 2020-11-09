@@ -27,8 +27,6 @@ public class StopwatchTabFrag extends Fragment {
     StopwatchTabViewModel stopwatchTabViewModel;
     Chronometer stopwatchChronometer;
 
-    long pauseOfset;
-    boolean running=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +41,7 @@ public class StopwatchTabFrag extends Fragment {
         //ViewModel and Factory Created }
 
         stopwatchChronometer=binding.stopwatchChronometer;
+
         stopwatchTabViewModel.buttonIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer imgId) {
@@ -52,35 +51,19 @@ public class StopwatchTabFrag extends Fragment {
                     case R.drawable.ic_round_pause_circle_filled_24:
                         binding.stop.setVisibility(View.VISIBLE);
                         binding.startPause.setImageResource(imgId);
-                        if(!running) {
-                            stopwatchChronometer.setBase(SystemClock.elapsedRealtime()-pauseOfset);
-                            Log.i("StopwatchTabFrag"," SystemClock.elapsedRealtime() is "+stopwatchChronometer.getBase());
-                            stopwatchChronometer.start();
-                            running=true;
-                        }
+                        stopwatchTabViewModel.startStopwatch(stopwatchChronometer);
                         break;
                     //when the icon is changed to start (or) when user clicks pause icon then Stopwatch is pause.
                     case R.drawable.ic_round_play_arrow_24:
                         binding.startPause.setImageResource(imgId);
-                        if (running){
-                            stopwatchChronometer.stop();
-                            Log.i("StopwatchTabFrag"," stopwatchChronometer.stop();  is executed...");
-                            pauseOfset=SystemClock.elapsedRealtime()-stopwatchChronometer.getBase();
-                            running=false;
-                        }
+                        stopwatchTabViewModel.pauseStopwatch(stopwatchChronometer);
                         break;
                     case R.drawable.ic_round_stop_24:
                         binding.stop.setVisibility(View.GONE);
-                        stopwatchChronometer.setBase(SystemClock.elapsedRealtime());
-                        pauseOfset=0;
-                        stopwatchChronometer.stop();
-                        //Reset the icon to Start
-                        stopwatchTabViewModel.setButtonIcon(R.drawable.ic_round_play_arrow_24);
+                        stopwatchTabViewModel.stopStopwatch(stopwatchChronometer);
                 }
             }
         });
-
-
 
         return binding.getRoot();
     }
