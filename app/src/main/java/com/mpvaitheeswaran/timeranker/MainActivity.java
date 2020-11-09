@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
+import com.google.android.material.tabs.TabLayout;
 import com.mpvaitheeswaran.timeranker.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,6 +14,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding=DataBindingUtil.setContentView(this,R.layout.activity_main);
-
     }
 }

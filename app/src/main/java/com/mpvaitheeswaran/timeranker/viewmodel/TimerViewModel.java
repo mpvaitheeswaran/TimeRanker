@@ -2,7 +2,6 @@ package com.mpvaitheeswaran.timeranker.viewmodel;
 
 
 import android.os.CountDownTimer;
-import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,13 +26,12 @@ public class TimerViewModel extends ViewModel {
         startCountDown(this.milliSecond);
         _buttonIcon.setValue(R.drawable.ic_round_pause_circle_filled_24);
         _timerText.setValue("Start Timer");
-        Log.i("TimerViewModel","TimerViewModel() Constructor called...");
 
     }
 
 
 
-    public void onClick(){
+    public void onClickStartAndPause(){
         switch (_buttonIcon.getValue()){
             case R.drawable.ic_round_play_arrow_24:
                 startCountDown(milliSecond);    //When user click pause button and click play button to continues the timer.
@@ -71,21 +69,27 @@ public class TimerViewModel extends ViewModel {
 
             public void onTick(long millisUntilFinished) {
                 milliSecond=millisUntilFinished;    //when user click pause button to pause the timer
-                _timerText.setValue("seconds remaining: " + millisUntilFinished / 1000);
+                updateCountDownText();
 
             }
 
             public void onFinish() {
-                _timerText.setValue("done!");
+                _timerText.setValue("done");
                 changeIcon();
 
             }
         }.start();
     }
+
+    void updateCountDownText(){
+        int minutes=(int) (milliSecond/1000)/60;
+        int seconds=(int) (milliSecond/1000)%60;
+        String formattedTime=String.format("%02d:%02d",minutes,seconds);
+        _timerText.setValue(formattedTime);
+    }
     @Override
     protected void onCleared() {
         super.onCleared();
         stopTimer();
-        Log.i("TimerViewModel","onCleared() is Called");
     }
 }

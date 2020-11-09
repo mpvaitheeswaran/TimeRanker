@@ -6,7 +6,7 @@
     app:startDestination="@id/timerGetDataFrag">
     <fragment
         android:id="@+id/timerGetDataFrag"
-        android:name="com.mpvaitheeswaran.timeranker.TimerGetDataFrag"
+        android:name="com.mpvaitheeswaran.timeranker.screens.TimerGetDataFrag"
         android:label="TimerGetDataFrag"
         tools:layout="@layout/fragment_timer_get_data">
         <action
@@ -15,12 +15,15 @@
     </fragment>
     <fragment
         android:id="@+id/timerFragment"
-        android:name="com.mpvaitheeswaran.timeranker.TimerFragment"
+        android:name="com.mpvaitheeswaran.timeranker.screens.TimerFragment"
         android:label="TimerFragment"
         tools:layout="@layout/fragment_timer">
         <argument
             android:name="milliSecond"
             app:argType="long"
             android:defaultValue="60000L" />
+        <action
+            android:id="@+id/action_timerFragment_to_timerGetDataFrag"
+            app:destination="@id/timerGetDataFrag" />
     </fragment>
 </navigation>
