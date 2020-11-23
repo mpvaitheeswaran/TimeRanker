@@ -207,13 +207,13 @@
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/num_pad"
+            android:onClick="@{()->viewModel.onClickClear()}"
+            app:layout_constraintBottom_toBottomOf="@+id/inputTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/inputTime"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/reset_24"
-            android:onClick="@{()->viewModel.onClickClear()}"/>
+            app:layout_constraintTop_toTopOf="@+id/inputTime"
+            app:srcCompat="@drawable/reset_24" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

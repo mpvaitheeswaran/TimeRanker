@@ -53,6 +53,11 @@ public class TimerViewModel extends ViewModel {
         //TODO Implement the stop timer action
         countDownTimer.cancel();
     }
+
+    public void onClickStop(){
+        _buttonIcon.setValue(R.drawable.ic_round_stop_24);
+    }
+
     private void changeIcon(){
         //TODO Implement the change Icon action
         switch (_buttonIcon.getValue()){
@@ -82,9 +87,11 @@ public class TimerViewModel extends ViewModel {
     }
 
     void updateCountDownText(){
-        int minutes=(int) (milliSecond/1000)/60;
-        int seconds=(int) (milliSecond/1000)%60;
-        String formattedTime=String.format("%02d:%02d",minutes,seconds);
+        //This formula got there from Stackoverflow
+        int seconds = (int) (milliSecond / 1000) % 60 ;
+        int minutes = (int) ((milliSecond / (1000*60)) % 60);
+        int hours   = (int) ((milliSecond / (1000*60*60)) % 24);
+        String formattedTime=String.format("%02d:%02d:%02d",hours,minutes,seconds);
         _timerText.setValue(formattedTime);
     }
     @Override

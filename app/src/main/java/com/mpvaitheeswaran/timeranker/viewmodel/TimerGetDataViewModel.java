@@ -10,16 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimerGetDataViewModel extends ViewModel {
+    static final int INITIAL_CURSOR = -1;
+    static final int MINUTE =60;
+    static final int SECOND =60;
+    static final int MILLISECOND =1000;
 
     List<Character> inputTime=new ArrayList<Character>();
     String time="";
-    int index=10;
+    int cursorIndex =INITIAL_CURSOR;
+
     //Encapsulated Variables
     private MutableLiveData<Boolean> _onStarted =new MutableLiveData<Boolean>();
     public LiveData<Boolean> onStarted=_onStarted;
 
     private MutableLiveData<String> _setTime =new MutableLiveData<String>();
     public LiveData<String> setTime=_setTime;
+
+    private MutableLiveData<Long> _totalMilliOfInput=new MutableLiveData<Long>();
+    public LiveData<Long> totalMilliOfInput = _totalMilliOfInput;
+
 
     //Default Settings Constructor
     TimerGetDataViewModel(){
@@ -44,41 +53,24 @@ public class TimerGetDataViewModel extends ViewModel {
         for (int index=0;index<inputTime.size();index++){
             time+=inputTime.get(index);
         }
-        Log.i("Time",time);
         _setTime.setValue(time);
         time="";
     }
     void setValue(char value){
-        if (!(index<0)){
-            if (index==10){
-                index--;
-                inputTime.set(index,value);
-
-            }else if ( index ==7){
-                index=index-2;
-                inputTime.set(index,value);
-
+        if(cursorIndex ==9){
+            cursorIndex = INITIAL_CURSOR;
+        }
+        else {
+            //This block is bug zone solved ArrayIndexOutOfBound Exception using nested if();
+            cursorIndex++;
+            if(!(cursorIndex ==6|| cursorIndex ==2)){
+                inputTime.set(cursorIndex,value);
+            }else {
+                cursorIndex = cursorIndex +2;
+                inputTime.set(cursorIndex,value);
             }
-            else if ( index==3){
-                index=index-2;
-                inputTime.set(index,value);
-            }else if(index==0){
-                index=10;
-            }
-            else {
-                index--;
-                if(!(index==7||index==3)){
-                    inputTime.set(index,value);
-                }else {
-                    index=index-2;
-                    inputTime.set(index,value);
-                }
-            }
-        }else {
-            //TODO write something when the index is 0;
         }
         updateTime();
-
     }
     private void resetTime(){
         inputTime.set(0,'0');
@@ -93,12 +85,23 @@ public class TimerGetDataViewModel extends ViewModel {
         inputTime.set(9,'0');
         inputTime.set(10,'s');
         updateTime();
-        index=10;
+        cursorIndex = INITIAL_CURSOR;
 
     }
 
     public void onStart(){
+        int hours= Integer.parseInt(""+inputTime.get(0)+inputTime.get(1));
+        int minutes =Integer.parseInt(""+inputTime.get(4)+inputTime.get(5));
+        int seconds=Integer.parseInt(""+inputTime.get(8)+inputTime.get(9));
+
+        //Time conversion to MilliSecond.
+        long hourToMili=(long) ((hours*MINUTE)*SECOND)*MILLISECOND;
+        long minuteToMilli=(long) (minutes*SECOND)*MILLISECOND;
+        long secondToMilli=(long) seconds*MILLISECOND;
+        long totalMilli = hourToMili + minuteToMilli + secondToMilli;
+        _totalMilliOfInput.setValue(totalMilli);
         _onStarted.setValue(true);
+
     }
     public void onStartFinished(){
         _onStarted.setValue(false);

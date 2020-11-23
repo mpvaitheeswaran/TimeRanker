@@ -50,8 +50,21 @@ public class TimerFragment extends Fragment {
 
         viewModel.buttonIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
-            public void onChanged(Integer icon) {
-                binding.imageView.setImageResource(icon);
+            public void onChanged(Integer imgId) {
+                switch (imgId){
+                    //when the icon is changed to pause (or) when user clicks play icon then Stopwatch is start.
+                    case R.drawable.ic_round_pause_circle_filled_24:
+                        binding.stop.setVisibility(View.VISIBLE);
+                        binding.startPause.setImageResource(imgId);
+                        break;
+                    //when the icon is changed to start (or) when user clicks pause icon then Stopwatch is pause.
+                    case R.drawable.ic_round_play_arrow_24:
+                        binding.startPause.setImageResource(imgId);
+                        break;
+                    case R.drawable.ic_round_stop_24:
+                        binding.stop.setVisibility(View.GONE);
+                        navController.navigate(TimerFragmentDirections.actionTimerFragmentToTimerGetDataFrag());
+                }
             }
         });
 
