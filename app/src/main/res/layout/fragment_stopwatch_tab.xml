@@ -43,13 +43,13 @@
             android:id="@+id/stop"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:onClick="@{()->stopwatchTabViewModel.onClickStop()}"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/start_pause"
             app:layout_constraintEnd_toStartOf="@+id/start_pause"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stopwatch_chronometer"
-            app:srcCompat="@drawable/ic_round_stop_24"
-            android:onClick="@{()->stopwatchTabViewModel.onClickStop()}"/>
+            app:layout_constraintTop_toTopOf="@+id/start_pause"
+            app:srcCompat="@drawable/ic_round_stop_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

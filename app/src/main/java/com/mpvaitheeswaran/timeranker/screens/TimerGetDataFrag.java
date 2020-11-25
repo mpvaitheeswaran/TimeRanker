@@ -34,6 +34,7 @@ public class TimerGetDataFrag extends Fragment {
         viewModelFactory=new TimerGetDataViewModelFactory();
         viewModel=new ViewModelProvider(this,viewModelFactory).get(TimerGetDataViewModel.class);
         binding.setViewModel(viewModel);
+        binding.start.setEnabled(false);
 
 
         return binding.getRoot();
@@ -48,26 +49,30 @@ public class TimerGetDataFrag extends Fragment {
             @Override
             public void onChanged(Boolean isStarted) {
                 if(isStarted){
-                    //Getting Data from EditText
+                    
+                    //Passinng data to TimerFragment
+                    TimerGetDataFragDirections.ActionTimerGetDataFragToTimerFragment action = TimerGetDataFragDirections
+                            .actionTimerGetDataFragToTimerFragment();
+                    action.setMilliSecond(viewModel.totalMilliOfInput.getValue());
+                    navController.navigate(action);
+                    viewModel.onStartFinished();
 
-                    if(isEditTextNotEmpty(binding.secondInput)) {
-                        int second=Integer.parseInt(binding.secondInput.getText().toString());
-                        long milliSecond=second*1000;
-
-                        //Passinng data to TimerFragment
-                        TimerGetDataFragDirections.ActionTimerGetDataFragToTimerFragment action = TimerGetDataFragDirections
-                                .actionTimerGetDataFragToTimerFragment();
-                        action.setMilliSecond(milliSecond);
-                        navController.navigate(action);
-                        Toast.makeText(getContext(), "Started is clicked...", Toast.LENGTH_SHORT).show();
-                        viewModel.onStartFinished();
-                    }else {
-                        Toast.makeText(getContext(), "Second value required!", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
 
 
+        });
+        viewModel.setTime.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String time) {
+                binding.inputTime.setText(time);
+                if(time.equals("00h 00m 00s")){
+                    //when the clear button is pressed the start button is disabled.
+                    binding.start.setEnabled(false);
+                }else {
+                    binding.start.setEnabled(true);
+                }
+            }
         });
     }
     private boolean isEditTextNotEmpty(EditText editText) {
