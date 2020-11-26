@@ -75,12 +75,5 @@ public class TimerGetDataFrag extends Fragment {
             }
         });
     }
-    private boolean isEditTextNotEmpty(EditText editText) {
-        if (editText.getText().toString().trim().isEmpty()){
-            return false;
-        }else {
-            return true;
-        }
-    }
 
 }
